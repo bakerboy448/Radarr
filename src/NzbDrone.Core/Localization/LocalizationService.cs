@@ -139,7 +139,14 @@ namespace NzbDrone.Core.Localization
                 await CopyInto(dictionary, languageBaseFilenamePath).ConfigureAwait(false);
             }
 
-            await CopyInto(dictionary, alternativeFilenamePath).ConfigureAwait(false);
+            try
+            {
+                await CopyInto(dictionary, alternativeFilenamePath).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                _logger.Warn("Unable to locate translation file: " + alternativeFilenamePath);
+            }
 
             return dictionary;
         }
